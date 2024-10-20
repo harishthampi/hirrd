@@ -6,8 +6,15 @@ import MDEditor from "@uiw/react-md-editor";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import ApplyJobDrawer from "@/components/apply-job";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {ApplyJobDrawer} from "@/components/apply-job";
+import ApplicationCard from "@/components/ui/application-card";
 
 const JobPage = () => {
   const { isLoaded, user } = useUser();
@@ -19,17 +26,17 @@ const JobPage = () => {
     fn: fnJob,
   } = useFetch(getSingleJob, { job_id: id }); //fetching single job
 
-  const {loading:loadingHiringStatus, fn:fnHiringStatus} = useFetch(
+  const { loading: loadingHiringStatus, fn: fnHiringStatus } = useFetch(
     updateHiringStatus,
     {
-      job_id:id,
+      job_id: id,
     }
   );
 
   const handleStatusChange = (value) => {
     const isOpen = value === "open";
-    fnHiringStatus(isOpen).then(() => fnJob())
-  }
+    fnHiringStatus(isOpen).then(() => fnJob());
+  };
 
   useEffect(() => {
     if (isLoaded) fnJob();
@@ -75,22 +82,26 @@ const JobPage = () => {
       </div>
 
       {/* hiring status */}
-      {loadingHiringStatus && <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />}
+      {loadingHiringStatus && (
+        <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
+      )}
       {job?.recruiter_id === user?.id && (
-      <Select onValueChange={handleStatusChange}>
-          <SelectTrigger className={`w-full ${job?.isOpen ? "bg-green-950" : "bg-red-950"}`}>
-            <SelectValue placeholder={
-              "Hiring Status: " + (job?.isOpen ? "Open" : "Closed")
-            } />
+        <Select onValueChange={handleStatusChange}>
+          <SelectTrigger
+            className={`w-full ${job?.isOpen ? "bg-green-950" : "bg-red-950"}`}
+          >
+            <SelectValue
+              placeholder={
+                "Hiring Status: " + (job?.isOpen ? "Open" : "Closed")
+              }
+            />
           </SelectTrigger>
           <SelectContent>
-                  <SelectItem  value="open">Open</SelectItem>
-                  <SelectItem  value="close">Closed</SelectItem>
+            <SelectItem value="open">Open</SelectItem>
+            <SelectItem value="close">Closed</SelectItem>
           </SelectContent>
         </Select>
       )}
-
-
 
       <h2 className="text-2xl sm:text-3xl font-bold">About the job</h2>
       <p className="sm:text-lg">{job?.description}</p>
@@ -100,12 +111,29 @@ const JobPage = () => {
       </h2>
       <MDEditor.Markdown
         source={job?.requirements}
-        className="bg-transparent sm:text-lg" // add global ul styles 
+        className="bg-transparent sm:text-lg" // add global ul styles
       />
       {/* render applications */}
       {job?.recruiter_id !== user?.id && (
-        <ApplyJobDrawer job={job} user={user} fetchJob={fnJob} applied={job?.applications.find((ap) => ap.candidate_id === user.id)}/>
+        <ApplyJobDrawer
+          job={job}
+          user={user}
+          fetchJob={fnJob}
+          applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
+        />
       )}
+      {
+        job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
+          <div className="flex  flex-col gap-2">
+            <h2 className="text-2xl sm:text-3xl font-bold">Applications</h2>
+            {
+              job?.applications.map((application) =>{
+                return <ApplicationCard key={application.id} application={application}/>
+              })
+            }
+          </div>
+        )
+      }
     </div>
   );
 };

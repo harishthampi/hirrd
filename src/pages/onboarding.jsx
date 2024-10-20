@@ -48,7 +48,7 @@ const OnBoarding = () => {
         <Button
           variant="destructive"
           className="h-36 text-2xl"
-          nClick={() => handleRoleSelection("recruiter")}
+          onClick={() => handleRoleSelection("recruiter")}
         >
           Recruiter
         </Button>

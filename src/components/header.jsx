@@ -32,6 +32,8 @@ const Header = () => {
     }
   };
 
+  console.log(user?.unsafeMetadata?.role);
+  
   return (
     <>
       <nav className="py-4 flex justify-between items-center">
@@ -47,14 +49,14 @@ const Header = () => {
 
           <SignedIn>
             {/* add a condition only show this if the user is a recruiter */}
-            { user?.unsafeMetadata?.role === 'recruiter' &&(
+            {user?.unsafeMetadata?.role === "recruiter" && (
               <Link to="/post-job">
                 <Button variant="destructive" className="rounded-full">
                   <PenBox size={20} className="mr-2" />
                   Post a Job
                 </Button>
-              </Link>)
-            }
+              </Link>
+            )}
             <UserButton
               appearance={{
                 elements: {

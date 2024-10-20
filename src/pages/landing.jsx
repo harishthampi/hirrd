@@ -13,7 +13,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const LandingPage = () => {
-  console.log("landinggggg");
   
   return (
     <main className="flex flex-col gap-10 sm:gap-20 py-10 sm:py-20">
