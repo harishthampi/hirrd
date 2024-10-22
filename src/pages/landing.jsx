@@ -34,7 +34,7 @@ const LandingPage = () => {
             Find Jobs
           </Button>
         </Link>
-        <Link to="/post-job">
+        <Link to="/post-jobs">
           <Button variant="destructive" size="xl">
             Post Jobs
           </Button>
